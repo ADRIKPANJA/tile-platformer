@@ -6,17 +6,15 @@ __pycache__/
 *.bin
 
 myenv/
-*.env
+*.*
 
 *.egg-info/
-.DS-Store
+*.DS-Store
 
 *.tmp
 
 .vscode/
 .idea/
 *.swp
-
-.github/
 
 Platformer/.platformer/ # world data and logs saved here
