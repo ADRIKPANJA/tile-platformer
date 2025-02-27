@@ -48,7 +48,5 @@ def main() -> None:
         pg.display.update()
         pg.time.Clock().tick(60)
 
-if __name__ != "__main__":
-    pass
-else:
+if __name__ == "__main__":
     main()
