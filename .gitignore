@@ -14,6 +14,7 @@ myenv/
 .vscode/
 .idea/
 *.swp
+*.code-workspace
 
 .platformer/Logs/
 *.log
