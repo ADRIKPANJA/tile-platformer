@@ -29,6 +29,16 @@ class Tile(pg.sprite.Sprite):
         self.tile_x, self.tile_y = tile_x, tile_y
         self.rect.center = (self.tile_x, self.tile_y)
 
-    def update(self, cameraX: float, cameraY: float) -> None: # Float is required as there will be motion smoothing in camera movements
+    def update(self, cameraX: float, cameraY: float, cloneX: float, cloneY: float) -> None: # Float is required as there will be motion smoothing in camera movements
         '''Update the tile'''
+        if abs(self.tile_x - cameraX) > cloneX * 16:
+            if self.tile_x < cameraX:
+                self.tile_x += cloneX * 32
+            else:
+                self.tile_x -= cloneX * 32
+        if abs(self.tile_y - cameraY) > cloneY * 16:
+            if self.tile_y < cameraY:
+                self.tile_y += cloneY * 32
+            else:
+                self.tile_y -= cloneY * 32
         self.rect.center = ct.from_center_coordinate(self.tile_x - cameraX, self.tile_y - cameraY)

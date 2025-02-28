@@ -44,15 +44,15 @@ def control_camera() -> None:
     global camX, camY
     '''The function to control the camera based on key inputs.'''
     keys = pg.key.get_pressed()
-    camX += (keys[pg.K_RIGHT] - keys[pg.K_LEFT])
-    camY += (keys[pg.K_UP] - keys[pg.K_DOWN])
-
+    camX += (keys[pg.K_RIGHT] - keys[pg.K_LEFT]) * 5
+    camY += (keys[pg.K_UP] - keys[pg.K_DOWN]) * 5
 def main() -> None:
     '''Mainloop'''
     while True:
+        cloneX, cloneY = get_dimensions()[0]/32, get_dimensions()[1]/32
         event_handler.events()
         control_camera()
-        tiles.update(camX, camY)
+        tiles.update(camX, camY, cloneX + 1, cloneY + 1) # offsets by 1 to reduce edge flickering
         screen.fill("white")
         tiles.draw(screen)
         pg.display.update()

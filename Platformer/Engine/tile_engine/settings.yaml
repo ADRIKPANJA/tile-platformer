@@ -4,3 +4,6 @@ Screen_Height: 720
 Screen_Width: 1280
 
 Resizable: True
+
+# this is a comment
+# please do not remove any settings, you can change settings. You can add settings but they wont be used. Altough its not recommended to add any.
