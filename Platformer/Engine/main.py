@@ -35,8 +35,7 @@ else:
 # Function to get the width and height
 def get_dimensions() -> tuple[int, int]:
     '''Get the screen dimensions'''
-    global width, height
-    return width, height
+    return screen.get_width(), screen.get_height()
 
 def main() -> None:
     '''Mainloop'''
