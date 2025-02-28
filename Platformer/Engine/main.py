@@ -6,12 +6,22 @@ import os
 import pygame as pg
 import event_handler
 import default_world_gen as gen
+from datetime import datetime
 
 '''The mainloop of the game'''
 
 pg.init()
 
 yaml_location = os.path.abspath(os.path.join(os.path.dirname(__file__), 'tile_engine', 'settings.yaml'))
+
+if __name__ == "__main__":
+    log_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '.platformer', 'Logs'))
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
+    log_file_location = os.path.abspath(os.path.join(log_dir, f'log_{datetime.now().strftime("%d%m%Y%H%M%S")}.log'))
+
+    with open(log_file_location, 'a') as file_log:
+        print(f'[Info!] Game started on {os.name}', file=file_log)
 
 # Global vars
 global height, width

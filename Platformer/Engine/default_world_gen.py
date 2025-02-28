@@ -22,5 +22,4 @@ def generate() -> tuple[list, int, int]:
     for i in range(grid_width - 2):
          column()
     wall()
-    print(world_data)
     return world_data, grid_height, grid_width
