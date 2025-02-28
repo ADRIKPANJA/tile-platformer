@@ -6,6 +6,7 @@
 *.bin
 
 myenv/
+*.*
 .egg-info/
 *.DS-Store
 
