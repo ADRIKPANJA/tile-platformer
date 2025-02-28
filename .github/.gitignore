@@ -8,7 +8,7 @@
 myenv/
 *.*
 
-*.egg-info/
+.egg-info/
 *.DS-Store
 
 *.tmp

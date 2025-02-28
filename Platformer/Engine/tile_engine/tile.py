@@ -10,10 +10,13 @@ def initialize_engine() -> pg.sprite.Group:
     '''The function initializes the engine, without this function executed, the tile engine will fail'''
     asset_fetch._import()
     tiles = pg.sprite.Group()
-    tile_x, tile_y = 0, 10 * -16
-    for i in range(0, 10):
-        tiles.add(Tile(tile_x, tile_y))
-        tile_y += 32
+    tile_x, tile_y = 10 * -16, 0
+    for x in range(0, 10):
+        tile_y = 10 * -16
+        for y in range(0, 10):
+            tiles.add(Tile(tile_x, tile_y))
+            tile_y += 32
+        tile_x += 32
     return tiles
 
 class Tile(pg.sprite.Sprite):
