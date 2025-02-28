@@ -5,14 +5,11 @@ import yaml
 import os
 import pygame as pg
 import event_handler
-from tile_engine import coordinate_translator as ct
+import default_world_gen as gen
 
 '''The mainloop of the game'''
 
 pg.init()
-
-global tiles
-tiles = tile_engine.tile.initialize_engine()
 
 yaml_location = os.path.abspath(os.path.join(os.path.dirname(__file__), 'tile_engine', 'settings.yaml'))
 
@@ -40,29 +37,51 @@ def get_dimensions() -> tuple[int, int]:
     return screen.get_width(), screen.get_height()
 
 global camX, camY
-init_x, init_y = (-get_dimensions()[0]/2, -get_dimensions()[1]/2)
-camX: float = init_x
-camY: float = init_y
+init_x, init_y = get_dimensions()
+camX: float = init_x/2 + 32
+camY: float = init_y/2 + 32
+
+global cloneX, cloneY
+cloneX, cloneY = get_dimensions()[0]//32 + 2, get_dimensions()[1]//32 + 2
+
+world_data, grid_height, grid_width = gen.generate()
+global tiles
+tiles = tile_engine.tile.initialize_engine(cloneX=cloneX, cloneY=cloneY, world_data=world_data, grid_height=grid_height)
+
+# Velocities of camera
+global Xv, Yv
+Xv: float = 0
+Yv: float = 0
 
 # Camera controller
-def control_camera() -> None:
-    global camX, camY
+def control_camera(dt) -> None:
+    global camX, camY, Xv, Yv
     '''The function to control the camera based on key inputs.'''
     keys = pg.key.get_pressed()
-    camX += (keys[pg.K_RIGHT] - keys[pg.K_LEFT]) * 5
-    camY += (keys[pg.K_UP] - keys[pg.K_DOWN]) * 5
+    Xv = ((keys[pg.K_RIGHT] - keys[pg.K_LEFT]) * 600 * dt) + (Xv * 0.8)
+    Yv = ((keys[pg.K_UP] - keys[pg.K_DOWN]) * 600 * dt) + (Yv * 0.8)
+    camX += Xv
+    camY += Yv
+    if camX < get_dimensions()[0]/2 + 32:
+        camX = get_dimensions()[0]/2 + 32
+    if camY < get_dimensions()[1]/2 + 32:
+        camY = get_dimensions()[1]/2 + 32
+    if camX > (grid_width * 32) - get_dimensions()[0]/2 + 32:
+        camX = (grid_width * 32) - get_dimensions()[0]/2 + 32
+    if camY > (grid_height * 32) - get_dimensions()[1]/2 + 32:
+        camY = (grid_height * 32) - get_dimensions()[1]/2 + 32
+
 def main() -> None:
     '''Mainloop'''
     while True:
-        global tiles
-        cloneX, cloneY = get_dimensions()[0]/32, get_dimensions()[1]/32
+        dt = pg.time.Clock().tick(240) / 1000
+        global cloneX, cloneY
         event_handler.events()
-        control_camera()
-        tiles.update(camX, camY, cloneX + 1, cloneY + 1) # offsets by 1 to reduce edge flickering
+        control_camera(dt)
+        tiles.update(camX, camY, cloneX, cloneY)
         screen.fill("white")
         tiles.draw(screen)
         pg.display.update()
-        pg.time.Clock().tick(60)
 
 if __name__ == "__main__":
     main()

@@ -21,7 +21,9 @@ Stay tuned!
 ---
 
 - [x] Engine code
-- [ ] Level code
+- [x] Level code
 - [ ] Read-Write
+- [ ] Level design
+
 
 :smile:
