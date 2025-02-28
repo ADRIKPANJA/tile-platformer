@@ -5,21 +5,21 @@ import yaml
 import os
 import pygame as pg
 import event_handler
+from tile_engine import coordinate_translator as ct
 
 '''The mainloop of the game'''
 
 pg.init()
 
+global tiles
 tiles = tile_engine.tile.initialize_engine()
 
 yaml_location = os.path.abspath(os.path.join(os.path.dirname(__file__), 'tile_engine', 'settings.yaml'))
 
 # Global vars
-global height, width, camX, camY
+global height, width
 height: int = 600
 width: int = 800
-camX: float = 0.0
-camY: float = 0.0
 
 with open(yaml_location, 'r') as file:
     loaded_data = yaml.safe_load(file)
@@ -29,8 +29,8 @@ with open(yaml_location, 'r') as file:
 global screen
 screen: pg.Surface
 
-if loaded_data['Resizable']:
-    screen = pg.display.set_mode((width, height), pg.RESIZABLE)
+if loaded_data['Fullscreen']:
+    screen = pg.display.set_mode((width, height), pg.FULLSCREEN)
 else:
     screen = pg.display.set_mode((width, height))
 
@@ -38,6 +38,11 @@ else:
 def get_dimensions() -> tuple[int, int]:
     '''Get the screen dimensions'''
     return screen.get_width(), screen.get_height()
+
+global camX, camY
+init_x, init_y = (-get_dimensions()[0]/2, -get_dimensions()[1]/2)
+camX: float = init_x
+camY: float = init_y
 
 # Camera controller
 def control_camera() -> None:
@@ -49,6 +54,7 @@ def control_camera() -> None:
 def main() -> None:
     '''Mainloop'''
     while True:
+        global tiles
         cloneX, cloneY = get_dimensions()[0]/32, get_dimensions()[1]/32
         event_handler.events()
         control_camera()

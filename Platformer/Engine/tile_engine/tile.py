@@ -10,9 +10,9 @@ def initialize_engine() -> pg.sprite.Group:
     '''The function initializes the engine, without this function executed, the tile engine will fail'''
     asset_fetch._import()
     tiles = pg.sprite.Group()
-    tile_x, tile_y = 10 * -16, 0
+    tile_x, tile_y = 48, 0
     for x in range(0, 10):
-        tile_y = 10 * -16
+        tile_y = 48
         for y in range(0, 10):
             tiles.add(Tile(tile_x, tile_y))
             tile_y += 32
@@ -31,14 +31,27 @@ class Tile(pg.sprite.Sprite):
 
     def update(self, cameraX: float, cameraY: float, cloneX: float, cloneY: float) -> None: # Float is required as there will be motion smoothing in camera movements
         '''Update the tile'''
-        if abs(self.tile_x - cameraX) > cloneX * 16:
+        while abs(self.tile_x - cameraX) > cloneX * 16:
             if self.tile_x < cameraX:
                 self.tile_x += cloneX * 32
             else:
                 self.tile_x -= cloneX * 32
-        if abs(self.tile_y - cameraY) > cloneY * 16:
+        while abs(self.tile_y - cameraY) > cloneY * 16:
             if self.tile_y < cameraY:
                 self.tile_y += cloneY * 32
             else:
                 self.tile_y -= cloneY * 32
         self.rect.center = ct.from_center_coordinate(self.tile_x - cameraX, self.tile_y - cameraY)
+
+    def re_init(self, cameraX: float, cameraY: float, cloneX: float, cloneY: float) -> None:
+        '''Reinit to reflect new window changes'''
+        while abs(self.tile_x - cameraX) > cloneX * 16:
+            if self.tile_x < cameraX:
+                self.tile_x += cloneX * 32
+            else:
+                self.tile_x -= cloneX * 32
+        while abs(self.tile_y - cameraY) > cloneY * 16:
+            if self.tile_y < cameraY:
+                self.tile_y += cloneY * 32
+            else:
+                self.tile_y -= cloneY * 32
