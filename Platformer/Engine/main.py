@@ -6,7 +6,8 @@ import os
 import pygame as pg
 import event_handler
 import default_world_gen as gen
-from datetime import datetime
+import logger
+from tile_engine import save_load
 
 '''The mainloop of the game'''
 
@@ -14,14 +15,11 @@ pg.init()
 
 yaml_location = os.path.abspath(os.path.join(os.path.dirname(__file__), 'tile_engine', 'settings.yaml'))
 
-if __name__ == "__main__":
-    log_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '.platformer', 'Logs'))
-    if not os.path.exists(log_dir):
-        os.makedirs(log_dir)
-    log_file_location = os.path.abspath(os.path.join(log_dir, f'log_{datetime.now().strftime("%d%m%Y%H%M%S")}.log'))
+logger.setup()
+event_handler.setup()
 
-    with open(log_file_location, 'a') as file_log:
-        print(f'[Info!] Game started on {os.name}', file=file_log)
+if __name__ == "__main__":
+    logger.log(f'[Info!] Game started on {os.name}')
 
 # Global vars
 global height, width
@@ -54,7 +52,10 @@ camY: float = init_y/2 + 32
 global cloneX, cloneY
 cloneX, cloneY = get_dimensions()[0]//32 + 2, get_dimensions()[1]//32 + 2
 
-world_data, grid_height, grid_width = gen.generate()
+
+world_data, grid_height, grid_width = save_load._import('Test') # it works!
+
+#world_data, grid_height, grid_width = gen.generate()
 global tiles
 tiles = tile_engine.tile.initialize_engine(cloneX=cloneX, cloneY=cloneY, world_data=world_data, grid_height=grid_height)
 
@@ -86,7 +87,7 @@ def main() -> None:
     while True:
         dt = pg.time.Clock().tick(240) / 1000
         global cloneX, cloneY
-        event_handler.events()
+        event_handler.events(world_data, grid_height, grid_width)
         control_camera(dt)
         tiles.update(camX, camY, cloneX, cloneY)
         screen.fill("white")
