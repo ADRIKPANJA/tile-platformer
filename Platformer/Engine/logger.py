@@ -15,5 +15,5 @@ def setup():
 def log(messege: str) -> None:
     '''Log the messege to the file'''
     with open(log_file_location, 'a') as file_log:
-        print(f'{messege} at _{datetime.now().strftime('%d/%m/%Y, %H:%M:%S')}', file=file_log)
+        print(f'{messege} at _{datetime.now().strftime("%d/%m/%Y, %H:%M:%S")}', file=file_log)
         print(messege)

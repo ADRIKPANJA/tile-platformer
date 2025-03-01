@@ -34,8 +34,16 @@ with open(yaml_location, 'r') as file:
 global screen
 screen: pg.Surface
 
-if loaded_data['Fullscreen']:
+if loaded_data['Fullscreen'] and loaded_data["Hardware_Accel"]:
+    screen = pg.display.set_mode((width, height), pg.FULLSCREEN | pg.HWSURFACE)
+    if __name__ == "__main__":
+        logger.log('HW Accel enabled!')
+elif loaded_data['Fullscreen']:
     screen = pg.display.set_mode((width, height), pg.FULLSCREEN)
+elif loaded_data["Hardware_Accel"]:
+    screen = pg.display.set_mode((width, height), pg.HWSURFACE)
+    if __name__ == "__main__":
+        logger.log('HW Accel enabled!')
 else:
     screen = pg.display.set_mode((width, height))
 
