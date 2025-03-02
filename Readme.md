@@ -22,8 +22,11 @@ Stay tuned!
 
 - [x] Engine code
 - [x] Level code
-- [ ] Read-Write
+- [x] Read-Write
 - [ ] Level design
+- [ ] Player Scripts
+- [ ] Finishing
+- [ ] UI
 
 
 :smile:
