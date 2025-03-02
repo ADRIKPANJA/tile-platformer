@@ -65,7 +65,8 @@ def export(json_name: str, world_data: list, height: int, width: int) -> None:
     folder = setup()
     json_file = os.path.abspath(os.path.join(folder, f'{json_name}.json'))
     if os.path.exists(json_file):
-        raise FileExistsError('Cannot overwrite an existing file')
+        logger.log(f'[Error!] An unexpected error occured while saving file -> Cannot overwrite an existing file.')
+        return
     try:
         with open(json_file, 'w') as file:
             json.dump(encoded, file)
@@ -82,6 +83,9 @@ def _import(json_name: str) -> tuple[list, int, int]:
     try:
         with open(json_file, 'r') as file:
             encoded = json.load(file)
+    except FileNotFoundError:
+        logger.log('[Error!] Save file not found! Press "g" to generate a new world and then press "e" to save it.')
+        return [], 0, 0
     except Exception as e:
         logger.log(f'[Error!] An unexpected error occured while loading file {e}')
         return [], 0, 0

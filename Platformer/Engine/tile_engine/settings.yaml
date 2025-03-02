@@ -1,9 +1,9 @@
 # settings.yaml
 
-Screen_Height: 1080
-Screen_Width: 1920
+Screen_Height: 720
+Screen_Width: 1280
 
-Fullscreen: True
+Fullscreen: False
 Hardware_Accel: True
 
 # this is a comment

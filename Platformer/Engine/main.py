@@ -8,6 +8,7 @@ import event_handler
 import default_world_gen as gen
 import logger
 from tile_engine import save_load
+from Editor.editor import Editor
 
 '''The mainloop of the game'''
 
@@ -35,13 +36,13 @@ global screen
 screen: pg.Surface
 
 if loaded_data['Fullscreen'] and loaded_data["Hardware_Accel"]:
-    screen = pg.display.set_mode((width, height), pg.FULLSCREEN | pg.HWSURFACE)
+    screen = pg.display.set_mode((width, height), pg.FULLSCREEN | pg.HWSURFACE | pg.DOUBLEBUF)
     if __name__ == "__main__":
         logger.log('HW Accel enabled!')
 elif loaded_data['Fullscreen']:
     screen = pg.display.set_mode((width, height), pg.FULLSCREEN)
 elif loaded_data["Hardware_Accel"]:
-    screen = pg.display.set_mode((width, height), pg.HWSURFACE)
+    screen = pg.display.set_mode((width, height), pg.HWSURFACE | pg.DOUBLEBUF)
     if __name__ == "__main__":
         logger.log('HW Accel enabled!')
 else:
@@ -60,7 +61,7 @@ camY: float = init_y/2 + 32
 global cloneX, cloneY
 cloneX, cloneY = get_dimensions()[0]//32 + 2, get_dimensions()[1]//32 + 2
 
-
+global world_data
 world_data, grid_height, grid_width = save_load._import('Test') # it works!
 
 #world_data, grid_height, grid_width = gen.generate()
@@ -72,6 +73,7 @@ global Xv, Yv
 Xv: float = 0
 Yv: float = 0
 
+editor = Editor()
 # Camera controller
 def control_camera(dt) -> None:
     global camX, camY, Xv, Yv
@@ -92,15 +94,24 @@ def control_camera(dt) -> None:
 
 def main(clock: pg.time.Clock) -> None:
     '''Mainloop'''
+    global world_data, grid_height, grid_width, tiles, cloneX, cloneY
     while True:
+        if pg.key.get_pressed()[pg.K_e]:
+            save_load.export('Test', world_data, grid_height, grid_width)
+        if pg.key.get_pressed()[pg.K_i]:
+            world_data, grid_height, grid_width = save_load._import('Test') # it works!
+            tiles = tile_engine.tile.initialize_engine(world_data, cloneX, cloneY, grid_height)
+        if pg.key.get_pressed()[pg.K_g]:
+            world_data, grid_height, grid_width = gen.generate()
+            tiles = tile_engine.tile.initialize_engine(world_data, cloneX, cloneY, grid_height)
         fps = str(round(clock.get_fps()))
         txt = pg.font.Font(None, 60)
         suf = txt.render(fps, True, 'Black')
         dt = clock.tick(240) / 1000
-        global cloneX, cloneY
-        event_handler.events(world_data, grid_height, grid_width)
+        event_handler.events()
         control_camera(dt)
         tiles.update(camX, camY, cloneX, cloneY)
+        editor.update(camX, camY, grid_height, world_data)
         screen.fill("white")
         tiles.draw(screen)
         screen.blit(suf, (10, 10))
