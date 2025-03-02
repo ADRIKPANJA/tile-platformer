@@ -23,6 +23,7 @@ Stay tuned!
 - [x] Engine code
 - [x] Level code
 - [x] Read-Write
+- [x] Editor Code
 - [ ] Level design
 - [ ] Player Scripts
 - [ ] Finishing
