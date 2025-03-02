@@ -22,7 +22,6 @@ class Editor():
         '''Update the editor'''
         if self.EDITOR and pg.mouse.get_pressed()[0]:
             mouseX, mouseY = ct.to_center_coordinate(pg.mouse.get_pos()[0] - 32, pg.mouse.get_pos()[1] + 32)
-            print(mouseX, mouseY)
             _, idx = find_tile.get_tile_at(mouseX + camX, mouseY + camY, grid_height, world_data)
             try:
                 world_data[idx] = tile_engine.asset_fetch._2
