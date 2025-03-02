@@ -90,17 +90,22 @@ def control_camera(dt) -> None:
     if camY > (grid_height * 32) - get_dimensions()[1]/2 + 32:
         camY = (grid_height * 32) - get_dimensions()[1]/2 + 32
 
-def main() -> None:
+def main(clock: pg.time.Clock) -> None:
     '''Mainloop'''
     while True:
-        dt = pg.time.Clock().tick(240) / 1000
+        fps = str(round(clock.get_fps()))
+        txt = pg.font.Font(None, 60)
+        suf = txt.render(fps, True, 'Black')
+        dt = clock.tick(240) / 1000
         global cloneX, cloneY
         event_handler.events(world_data, grid_height, grid_width)
         control_camera(dt)
         tiles.update(camX, camY, cloneX, cloneY)
         screen.fill("white")
         tiles.draw(screen)
+        screen.blit(suf, (10, 10))
         pg.display.update()
 
 if __name__ == "__main__":
-    main()
+    clock = pg.time.Clock()
+    main(clock)
