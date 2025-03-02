@@ -108,10 +108,10 @@ def main(clock: pg.time.Clock) -> None:
         txt = pg.font.Font(None, 60)
         suf = txt.render(fps, True, 'Black')
         dt = clock.tick(240) / 1000
-        event_handler.events()
+        mouse = event_handler.events()
         control_camera(dt)
         tiles.update(camX, camY, cloneX, cloneY)
-        editor.update(camX, camY, grid_height, world_data)
+        editor.update(camX, camY, grid_height, world_data, mouse)
         screen.fill("white")
         tiles.draw(screen)
         screen.blit(suf, (10, 10))
