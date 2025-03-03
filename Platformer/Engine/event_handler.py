@@ -12,7 +12,7 @@ def setup():
     let = 0
     ltp = None
 
-def events() -> bool:
+def events() -> None:
     global let, ltp
     '''Handle the events'''
     mouse = False
@@ -21,11 +21,3 @@ def events() -> bool:
         if event.type == pygame.QUIT:
             logger.log('Game session finished')
             sys.exit()
-        if event.type in (pygame.MOUSEMOTION, pygame.MOUSEBUTTONDOWN) and pygame.mouse.get_pressed()[0]:
-            mouse = True
-            mp = pygame.mouse.get_pos()
-            if (ct - let) > 0.1 and mp != ltp:
-                let = ct
-                ltp = mp
-                return True
-    return False

@@ -2,7 +2,6 @@
 
 from . import find_tile
 import pygame as pg
-import logger
 import tile_engine.coordinate_translator as ct
 import tile_engine.asset_fetch
 import time

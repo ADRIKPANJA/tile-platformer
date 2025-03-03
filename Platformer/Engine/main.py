@@ -104,14 +104,16 @@ def main(clock: pg.time.Clock) -> None:
         if pg.key.get_pressed()[pg.K_g]:
             world_data, grid_height, grid_width = gen.generate()
             tiles = tile_engine.tile.initialize_engine(world_data, cloneX, cloneY, grid_height)
+        if pg.key.get_pressed()[pg.K_x]:
+            editor.toggle_edit_mode()
         fps = str(round(clock.get_fps()))
         txt = pg.font.Font(None, 60)
         suf = txt.render(fps, True, 'Black')
         dt = clock.tick(240) / 1000
-        mouse = event_handler.events()
+        event_handler.events()
         control_camera(dt)
         tiles.update(camX, camY, cloneX, cloneY)
-        editor.update(camX, camY, grid_height, world_data, mouse)
+        editor.update(camX, camY, grid_height, world_data, pg.mouse.get_pressed()[0])
         screen.fill("white")
         tiles.draw(screen)
         screen.blit(suf, (10, 10))
