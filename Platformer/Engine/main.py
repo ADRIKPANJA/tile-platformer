@@ -9,6 +9,7 @@ import default_world_gen as gen
 import logger
 from tile_engine import save_load
 from Editor.editor import Editor
+from tile_engine import asset_fetch
 
 '''The mainloop of the game'''
 
@@ -117,6 +118,10 @@ def main(clock: pg.time.Clock) -> None:
         screen.fill("white")
         tiles.draw(screen)
         screen.blit(suf, (10, 10))
+        if editor.keymap.empty:
+            screen.blit(asset_fetch.erasor, (10, 50))
+        else:
+            screen.blit(editor.keymap.current, (10, 50))
         pg.display.update()
 
 if __name__ == "__main__":

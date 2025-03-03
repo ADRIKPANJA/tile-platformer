@@ -1,4 +1,5 @@
 # __init__.py
 
-from . import editor
+from . import editor, keymapper
 editor.setup()
+keymapper.setup()

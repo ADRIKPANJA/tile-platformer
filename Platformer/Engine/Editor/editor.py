@@ -1,6 +1,6 @@
 # editor.py
 
-from . import find_tile
+from . import find_tile, keymapper
 import pygame as pg
 import tile_engine.coordinate_translator as ct
 import tile_engine.asset_fetch
@@ -19,9 +19,12 @@ class Editor():
         self.EDITOR = True
         self.pt = 0
         self.li = 0
+        self.keymap = keymapper.Keymapper()
+        self.chosen_brush = pg.surface.Surface((32, 32))
 
     def update(self, camX: float, camY: float, grid_height: int, world_data: list, mouse: bool) -> None:
         '''Update the editor'''
+        self.chosen_brush = self.keymap.get_surface()
         if not (self.EDITOR and mouse):
             return
         ctime = time.time()
@@ -32,11 +35,10 @@ class Editor():
         if (ctime - self.pt) > 0.001:
             self.pt = ctime
             self.li = idx
-            chosen_brush = tile_engine.asset_fetch._2
-            if tile == chosen_brush:
+            if tile == self.chosen_brush:
                 brush = tile_engine.asset_fetch._1
             else:
-                brush = chosen_brush
+                brush = self.chosen_brush
             try:
                 world_data[idx] = brush
             except IndexError:
